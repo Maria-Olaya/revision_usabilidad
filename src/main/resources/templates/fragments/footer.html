@@ -1,0 +1,35 @@
+<!-- ============================
+     📂 templates/fragments/footer.html
+     Fragmento del footer
+     ============================ -->
+<footer>
+  <div class="container d-flex flex-column flex-md-row justify-content-between">
+    <div style="max-width:360px">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+        <img src="/images/logo-caba-pro.png" alt="logo" style="height:36px">
+        <strong th:text="#{name}" > </strong>
+      </div>
+       <p class="footer-desc" th:text="#{footer.descripcion}"></p>
+    </div>
+
+    <div class="d-flex gap-5 mt-4 mt-md-0">
+      <div>
+        <h6 th:text="#{footer.plataforma}"></h6>
+
+        <ul class="list-unstyled mt-2">
+          <li><a href="#" th:text="#{footer.caracteristicas}"></a></li>
+          <li><a href="#" th:text="#{footer.paraArbitros}"></a></li>
+          <li><a href="#" th:text="#{footer.paraAdministradores}"></a></li>
+        </ul>
+      </div>
+      <div>
+        <h6 th:text="#{footer.soporte}"></h6>
+        <ul class="list-unstyled mt-2">
+          <li><a href="#" th:text="#{footer.centroAyuda}"></a></li>
+          <li><a href="#" th:text="#{footer.contacto}"></a></li>
+          <li><a href="#" th:text="#{footer.documentacion}"></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>

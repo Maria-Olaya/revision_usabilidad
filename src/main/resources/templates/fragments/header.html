@@ -1,0 +1,130 @@
+<header>
+  <div class="container py-3 d-flex align-items-center justify-content-between">
+    <!-- Logo -->
+    <a href="/">
+      <img src="/images/logo-caba-pro.png" alt="CABA Pro" class="logo">
+    </a>
+
+    <!-- Navegación (desktop) -->
+    <nav class="d-none d-md-flex align-items-center gap-3">
+      <a href="/" th:text="#{header.inicio}" class="nav-link-text"></a>
+
+      <!-- NO autenticado -->
+      <div sec:authorize="isAnonymous()">
+        <a href="/login" th:text="#{header.iniciarSesion}" class="nav-link-naranja"></a>
+      </div>
+
+      <!-- Autenticado -->
+      <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-3">
+
+        <!-- ADMIN -->
+        <div sec:authorize="hasRole('ADMIN')" class="d-flex align-items-center gap-3">
+          <a href="/admin/arbitros" th:text="#{header.dashboard}" class="nav-link-naranja"></a>
+          <a href="/admin/arbitros/nuevo" th:text="#{header.crearArbitro}" class="nav-link-naranja"></a>
+          <a href="/torneos" th:text="#{header.torneos}" class="nav-link-naranja"></a>
+          <a href="/admin/tarifas/asignar" th:text="#{header.visualizarTarifas}" class="nav-link-naranja"></a>
+          <a href="/admin/liquidaciones" th:text="#{header.generarLiquidaciones}" class="nav-link-naranja"></a>
+        </div>
+
+        <!-- ARBITRO -->
+        <div sec:authorize="hasRole('ARBITRO')" class="d-flex align-items-center gap-3">
+          <a href="/arbitro/dashboard" th:text="#{header.dashboard}" class="nav-link-naranja"></a>
+          <a href="/arbitro/edit" th:text="#{header.editarPerfil}" class="nav-link-naranja"></a>
+          <a href="/arbitro/asignaciones" th:text="#{header.misAsignaciones}" class="nav-link-naranja"></a>
+          <a href="/arbitro/liquidaciones" th:text="#{header.misLiquidaciones}" class="nav-link-naranja"></a>
+        </div>
+
+        <!-- Cualquier otro rol -->
+        <a sec:authorize="!hasRole('ADMIN') and !hasRole('ARBITRO')"
+           href="/" th:text="#{header.dashboard}" class="nav-link-naranja"></a>
+
+        <!-- Logout -->
+        <form th:action="@{/logout}" method="post" style="display:inline">
+          <button type="submit"
+                  th:text="#{header.cerrarSesion}"
+                  class="nav-link-naranja"
+                  style="background:none; border:none; padding:0; cursor:pointer;"></button>
+        </form>
+
+        <!-- Selector de idioma (desktop) -->
+        <form method="get" th:action="@{''}" class="ms-3">
+          <select name="lang"
+                  onchange="this.form.submit()"
+                  class="form-select form-select-sm"
+                  style="width:auto; display:inline-block;">
+            <option value="es" th:selected="${#locale.language == 'es'}">ES</option>
+            <option value="en" th:selected="${#locale.language == 'en'}">EN</option>
+          </select>
+
+          <!-- Preserva parámetros que sí necesitas (ej. partidoId) -->
+          <input type="hidden" name="partidoId"
+                 th:if="${param.partidoId != null}"
+                 th:value="${param.partidoId}"/>
+          <!-- Añade aquí otros que necesites conservar en otras pantallas -->
+          <!-- <input type="hidden" name="id" th:if="${param.id}" th:value="${param.id}"/> -->
+        </form>
+      </div>
+    </nav>
+
+    <!-- Botón menú móvil -->
+    <div class="d-md-none">
+      <button class="btn btn-sm btn-outline-secondary" type="button"
+              onclick="document.querySelector('.mobile-menu').classList.toggle('d-none')">
+        ☰
+      </button>
+    </div>
+  </div>
+
+  <!-- Menú móvil -->
+  <div class="mobile-menu d-none bg-white border-top">
+    <div class="p-3">
+      <a href="/" th:text="#{header.inicio}" class="nav-link-text d-block mb-2"></a>
+
+      <div sec:authorize="isAuthenticated()" class="mt-2">
+        <div sec:authorize="hasRole('ADMIN')" class="mb-2">
+          <a href="/admin/arbitros" th:text="#{header.dashboard}" class="nav-link-naranja d-block mb-2"></a>
+          <a href="/admin/arbitros/nuevo" th:text="#{header.crearArbitro}" class="nav-link-naranja d-block mb-2"></a>
+          <a href="/torneos" th:text="#{header.torneos}" class="nav-link-naranja d-block mb-2"></a>
+          <a href="/admin/tarifas/asignar" th:text="#{header.visualizarTarifas}" class="nav-link-naranja d-block mb-2"></a>
+          <a href="/admin/liquidaciones" th:text="#{header.generarLiquidaciones}" class="nav-link-naranja d-block mb-2"></a>
+        </div>
+
+        <div sec:authorize="hasRole('ARBITRO')" class="mb-2">
+          <a href="/arbitro/dashboard" th:text="#{header.dashboard}" class="nav-link-naranja d-block mb-2"></a>
+          <a href="/arbitro/edit" th:text="#{header.editarPerfil}" class="nav-link-naranja d-block mb-2"></a>
+          <a href="/arbitro/asignaciones" th:text="#{header.misAsignaciones}" class="nav-link-naranja d-block mb-2"></a>
+          <a href="/arbitro/liquidaciones" th:text="#{header.misLiquidaciones}" class="nav-link-naranja d-block mb-2"></a>
+        </div>
+
+        <form th:action="@{/logout}" method="post" class="mb-3">
+          <button type="submit" th:text="#{header.cerrarSesion}" class="nav-link-naranja d-block"
+                  style="background:none; border:none; padding:0; cursor:pointer;"></button>
+        </form>
+
+        <!-- Selector de idioma (móvil) -->
+        <form method="get" th:action="@{''}">
+          <select name="lang" onchange="this.form.submit()" class="form-select form-select-sm" style="width:auto;">
+            <option value="es" th:selected="${#locale.language == 'es'}">ES</option>
+            <option value="en" th:selected="${#locale.language == 'en'}">EN</option>
+          </select>
+          <input type="hidden" name="partidoId"
+                 th:if="${param.partidoId != null}"
+                 th:value="${param.partidoId}"/>
+        </form>
+      </div>
+
+      <!-- NO autenticado (móvil) -->
+      <div sec:authorize="isAnonymous()" class="mt-2">
+        <a href="/login" th:text="#{header.iniciarSesion}" class="nav-link-naranja d-block mb-2"></a>
+
+        <!-- Selector idioma también disponible en anónimo -->
+        <form method="get" th:action="@{''}">
+          <select name="lang" onchange="this.form.submit()" class="form-select form-select-sm" style="width:auto;">
+            <option value="es" th:selected="${#locale.language == 'es'}">ES</option>
+            <option value="en" th:selected="${#locale.language == 'en'}">EN</option>
+          </select>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
