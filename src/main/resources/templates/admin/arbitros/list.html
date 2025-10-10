@@ -89,8 +89,10 @@
           <td th:text="${a.id}"></td>
           <td th:text="${(a.nombre != null ? a.nombre : '') + ' ' + (a.apellido != null ? a.apellido : '')}"></td>
           <td th:text="${a.correo}"></td>
-          <td th:text="${a.especialidad}"></td>
-          <td th:text="${a.escalafon}"></td>
+
+          <td th:text="#{${a.especialidad.messageKey}}"></td>
+          <td th:text="#{${a.escalafon.messageKey}}"></td>
+
           <td>
             <span th:if="${a.fechasDisponibles == null or #lists.isEmpty(a.fechasDisponibles)}">—</span>
             <span th:if="${a.fechasDisponibles != null and !#lists.isEmpty(a.fechasDisponibles)}"

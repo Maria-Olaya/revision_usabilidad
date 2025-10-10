@@ -29,10 +29,12 @@
             <div class="mb-3">
               <label class="form-label" th:text="#{admin.tarifas.asignar.torneo}"></label>
               <select name="torneoId" class="form-select" required>
+                <!-- CHG: mostrar categoría traducida dentro del option -->
                 <option th:each="t : ${torneos}"
                         th:value="${t.idTorneo}"
                         th:selected="${torneo != null and torneo.idTorneo == t.idTorneo}"
-                        th:text="|${t.nombre} (${t.categoria})|"></option>
+                        th:text="|${t.nombre} (#{${t.categoria.messageKey}})|">
+                </option>
               </select>
             </div>
             <div class="d-grid">
@@ -41,8 +43,10 @@
           </form>
 
           <div th:if="${torneo != null}">
+            <!-- CHG: categoría del torneo traducida en el encabezado -->
             <h4 class="mb-3"
-                th:text="|#{admin.tarifas.asignar.torneoLabel}: ${torneo.nombre} - #{admin.tarifas.asignar.categoriaLabel}: ${torneo.categoria}|"></h4>
+                th:text="|#{admin.tarifas.asignar.torneoLabel}: ${torneo.nombre} - #{admin.tarifas.asignar.categoriaLabel}: #{${torneo.categoria.messageKey}}|">
+            </h4>
 
             <!-- Tabla de asignación de tarifas -->
             <div class="table-responsive mb-4">
@@ -67,7 +71,8 @@
                     <td th:text="${r.partido.lugar}"></td>
                     <td th:text="${r.partido.equipoLocal + ' vs ' + r.partido.equipoVisitante}"></td>
                     <td th:text="${r.arbitro.nombre + ' ' + r.arbitro.apellido}"></td>
-                    <td th:text="${r.arbitro.escalafon}"></td>
+                    <!-- CHG: escalafón del árbitro traducido; null-safe -->
+                    <td th:text="${r.arbitro.escalafon} != null ? #{${r.arbitro.escalafon.messageKey}} : '-'"></td>
                     <td th:text="${#numbers.formatDecimal(r.base,0,'POINT',2,'COMMA')}"></td>
                     <td th:text="${#numbers.formatDecimal(r.adicional,0,'POINT',2,'COMMA')}"></td>
                     <td th:text="${#numbers.formatDecimal(r.total,0,'POINT',2,'COMMA')}"></td>

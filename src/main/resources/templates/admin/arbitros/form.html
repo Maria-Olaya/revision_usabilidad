@@ -79,9 +79,12 @@
             <div class="mb-3">
               <label class="form-label" th:text="#{admin.arbitros.especialidad}"></label>
               <select th:field="*{especialidad}" class="form-select" required>
-                <option value="" disabled th:selected="${form.especialidad == null}"
-                        th:text="#{admin.arbitros.selecciona}"></option>
-                <option th:each="e : ${especialidades}" th:value="${e}" th:text="${e}"></option>
+               <option value="" disabled th:selected="${form.especialidad == null}"
+                       th:text="#{admin.arbitros.selecciona}"></option>
+
+               <option th:each="e : ${especialidades}"
+                       th:value="${e}"
+                       th:text="#{${e.messageKey}}"></option>
               </select>
               <div class="text-danger small" th:if="${#fields.hasErrors('especialidad')}" th:errors="*{especialidad}"></div>
             </div>
@@ -90,14 +93,16 @@
             <div class="mb-3">
               <label class="form-label" th:text="#{admin.arbitros.escalafon}"></label>
               <select th:field="*{escalafon}" class="form-select" required>
-                <option value="" disabled th:selected="${form.escalafon == null}"
-                        th:text="#{admin.arbitros.selecciona}"></option>
-                <option th:each="e : ${escalafones}" th:value="${e}" th:text="${e}"></option>
+               <option value="" disabled th:selected="${form.escalafon == null}"
+                      th:text="#{admin.arbitros.selecciona}"></option>
+
+               <option th:each="e : ${escalafones}"
+                      th:value="${e}"
+                      th:text="#{${e.messageKey}}"></option>
               </select>
               <div class="text-danger small" th:if="${#fields.hasErrors('escalafon')}" th:errors="*{escalafon}"></div>
             </div>
 
-            
             <div class="d-grid mt-4">
               <button type="submit" class="btn btn-cta btn-caba-naranja btn-lg"
                       th:text="${modo} == 'editar' ? #{admin.arbitros.actualizar} : #{admin.arbitros.guardar}"></button>
