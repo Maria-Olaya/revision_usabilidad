@@ -166,7 +166,7 @@ public class PartidoService {
         if (partido.getEstadoPartido() == EstadoPartido.CANCELADO) return;
 
         LocalDateTime ahora = LocalDateTime.now();
-        long duracionMinutos = 20L; //  parametrizar
+        long duracionMinutos = 10L; //  parametrizar
 
         LocalDateTime inicio = partido.getFecha();
         LocalDateTime fin = inicio.plusMinutes(duracionMinutos);

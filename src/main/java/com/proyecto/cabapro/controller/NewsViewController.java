@@ -2,26 +2,41 @@ package com.proyecto.cabapro.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.proyecto.cabapro.model.NewsArticle;
-import com.proyecto.cabapro.service.NewsDataService;
+import com.proyecto.cabapro.service.NoticiasProvider;
 
 @Controller
 public class NewsViewController {
 
-    private final NewsDataService newsDataService;
+    private final NoticiasProvider noticiasApi;   // implementacion real
+    private final NoticiasProvider noticiasMock;  // implementacion de prueba
 
-    public NewsViewController(NewsDataService newsDataService) {
-        this.newsDataService = newsDataService;
+    // Inyectamos las implementaciones concretas usando @Qualifier
+    public NewsViewController(
+            @Qualifier("noticiasApiProvider") NoticiasProvider noticiasApi,
+            @Qualifier("noticiasMockProvider") NoticiasProvider noticiasMock) {
+        this.noticiasApi = noticiasApi;
+        this.noticiasMock = noticiasMock;
     }
 
-    @GetMapping("/noticias")
-    public String showNews(Model model) {
-        List<NewsArticle> articles = newsDataService.getBasketballNews();
+    // Mostrar noticias reales
+    @GetMapping("/noticias/api")
+    public String showNewsApi(Model model) {
+        List<NewsArticle> articles = noticiasApi.obtenerNoticias();
         model.addAttribute("articles", articles);
-        return "news"; // esto buscará un archivo llamado news.html
+        return "news"; // Thymeleaf buscará news.html
+    }
+
+    // Mostrar noticias mock
+    @GetMapping("/noticias/mock")
+    public String showNewsMock(Model model) {
+        List<NewsArticle> articles = noticiasMock.obtenerNoticias();
+        model.addAttribute("articles", articles);
+        return "news"; 
     }
 }
